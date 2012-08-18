@@ -1,0 +1,8 @@
+[GTG Plugin]
+Module=notification
+Name=Notification
+Short-description="Description"
+Description="Description"
+Authors=Baptiste Saleil <baptiste.saleil@gmail.com>
+Version=0.1
+Enabled=False

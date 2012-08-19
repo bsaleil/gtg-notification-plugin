@@ -12,9 +12,8 @@ import gobject
 # TODO Delete job when task is closed (done, delete, ...)
 # TODO For now, gtg have to be open when notification appears
 
-# TODO icon
 # TODO doc
-# TODO design
+# TODO GtkSwitch, not available with pygtk ?
 
 class TimePicker:
 	
@@ -92,16 +91,24 @@ class TimePicker:
 			self.calendar.select_month(int(dateArray[1]),int(dateArray[0]))
 			self.calendar.select_day(int(dateArray[2]))
 			
-			# TODO decocher case quand notification affichee
+			# Disable UI if notification already displayed
 			timeStr = ""
 			if timeArray[2] == "PM":
 				timeStr += str(int(timeArray[0])+12)
 			else:  timeStr += timeArray[0]
 			timeStr += ":" + timeArray[1] + "/"
-			timeStr += array[2]
+			
+			# Convert to python format (no sense)
+			dateArray[1] = int(dateArray[1]) + 1
+			timeStr += ':'.join(str(x) for x in dateArray)
 			
 			date = datetime.strptime(timeStr, "%H:%M/%Y:%m:%d")
-			print date
+			today = datetime.now()
+			
+			if date < today:
+				self.check.set_active(False)
+				self.boxHour.set_sensitive(0)
+				self.calendar.set_sensitive(0)
 		else:
 			task = self.plugin_api.get_ui().get_task()
 			start_date = task.get_start_date();

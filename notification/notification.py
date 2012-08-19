@@ -2,6 +2,7 @@ import gtk
 from timepicker import TimePicker
 from GTG import _
 import dbus
+import os
 
 class Notification:
 	def __init__(self):
@@ -17,7 +18,21 @@ class Notification:
 		if not plugin_api.is_browser():
 			# Add button to toolbar	
 			self.hourButton = gtk.ToolButton()
+			
+			# Load icon
+			path = os.path.dirname(os.path.abspath(__file__))
+			icon_path = os.path.join(path, "icon.png")
+			pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icon_path , 24, 24)
+			
+			# Create image
+			image = gtk.Image()
+			image.set_from_pixbuf(pixbuf)
+			image.show()
+			
+			# Add button
 			plugin_api.add_toolbar_item(self.hourButton)
+			self.hourButton.set_icon_widget(image)
+			self.hourButton.set_label("Notification")
 			self.hourButton.show()
 			self.hourButton.connect("clicked", self.openTimePicker)
 
